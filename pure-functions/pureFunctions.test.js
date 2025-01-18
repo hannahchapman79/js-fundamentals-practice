@@ -1,6 +1,7 @@
 const addTagToPosts = require("./addTagToPosts");
 const updateInventory = require("./updateInventory");
 const cloneObject = require("./cloneObject");
+const mergeArrays = require("./mergeArrays");
 
 describe("Pure Functions - addTagToPosts & updateInventory, cloneObject", () => {
 
@@ -126,5 +127,35 @@ describe("Pure Functions - addTagToPosts & updateInventory, cloneObject", () => 
       expect(result).toEqual({ a: 1, b: null, c: undefined, d: 0 });
     });
   });
+
+  describe('mergeArrays', () => {
+    test('should merge two arrays without duplicates', () => {
+        expect(mergeArrays([1, 2, 3], [3, 4, 5])).toEqual([1, 2, 3, 4, 5]);
+    });
+
+    test('should preserve order of first appearance', () => {
+        expect(mergeArrays([7, 8], [8, 9, 10])).toEqual([7, 8, 9, 10]);
+    });
+
+    test('should return the second array when the first is empty', () => {
+        expect(mergeArrays([], [1, 2, 3])).toEqual([1, 2, 3]);
+    });
+
+    test('should return the first array when the second is empty', () => {
+        expect(mergeArrays([4, 5, 6], [])).toEqual([4, 5, 6]);
+    });
+
+    test('should remove duplicates if they appear in both arrays', () => {
+        expect(mergeArrays([1, 1, 2], [2, 3, 3, 4])).toEqual([1, 2, 3, 4]);
+    });
+
+    test('should handle cases where both arrays contain the same elements', () => {
+        expect(mergeArrays([5, 5, 5], [5, 5])).toEqual([5]);
+    });
+
+    test('should return an empty array when both inputs are empty', () => {
+        expect(mergeArrays([], [])).toEqual([]);
+    });
+});
 
 });
