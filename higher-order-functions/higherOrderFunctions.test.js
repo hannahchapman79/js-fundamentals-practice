@@ -1,6 +1,7 @@
 const filter = require('./filter'); 
 const remove = require('./remove');
-const find = require('./find')
+const find = require('./find');
+const reduce = require('./reduce');
 
 describe('filter function', () => {
   test('filters even numbers from an array', () => {
@@ -110,5 +111,60 @@ describe('remove function', () => {
       const arr = [5, 4, 3, 2, 1];
       const result = find(arr, (num) => num === 4);
       expect(result).toBe(4); 
+    });
+  });
+
+  describe('reduce function', () => {
+    test('reduces an array of numbers to their sum', () => {
+      const arr = [1, 2, 3, 4];
+      const result = reduce(arr, (acc, num) => acc + num, 0);
+      expect(result).toBe(10); // 1 + 2 + 3 + 4 = 10
+    });
+  
+    test('works with an initial value other than 0', () => {
+      const arr = [1, 2, 3, 4];
+      const result = reduce(arr, (acc, num) => acc + num, 5);
+      expect(result).toBe(15); // 5 + 1 + 2 + 3 + 4 = 15
+    });
+  
+    test('works with an empty array', () => {
+      const arr = [];
+      const result = reduce(arr, (acc, num) => acc + num, 0);
+      expect(result).toBe(0); // No elements to reduce, should return the initial value
+    });
+  
+    test('works with a string array to join them', () => {
+      const arr = ['Hello', ' ', 'World'];
+      const result = reduce(arr, (acc, str) => acc + str, '');
+      expect(result).toBe('Hello World'); // Join all strings
+    });
+  
+    test('multiplies all elements in the array', () => {
+      const arr = [1, 2, 3, 4];
+      const result = reduce(arr, (acc, num) => acc * num, 1);
+      expect(result).toBe(24); // 1 * 2 * 3 * 4 = 24
+    });
+  
+    test('returns the accumulator when no elements in the array', () => {
+      const arr = [];
+      const result = reduce(arr, (acc, num) => acc + num, 10);
+      expect(result).toBe(10); // Empty array, should return the initial value
+    });
+  
+    test('works with objects', () => {
+      const arr = [{ a: 1 }, { b: 2 }, { c: 3 }];
+      const result = reduce(arr, (acc, obj) => ({ ...acc, ...obj }), {});
+      expect(result).toEqual({ a: 1, b: 2, c: 3 }); // Merge all objects
+    });
+  
+    test('works with an array of boolean values', () => {
+      const arr = [true, false, true, false];
+      const result = reduce(arr, (acc, bool) => acc && bool, true);
+      expect(result).toBe(false); // True AND false = false
+    });
+  
+    test('handles non-array inputs gracefully', () => {
+      const result = reduce('string', (acc, char) => acc + char, '');
+      expect(result).toBe('string'); // Treats 'string' as an array of characters
     });
   });
