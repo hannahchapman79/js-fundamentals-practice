@@ -8,4 +8,6 @@ function filter(array, callbackfn) {
     return newArray;
   }
 
+  // Key takeaway: Filter returns a new array and should not mutate the original array
+
   module.exports = filter;
